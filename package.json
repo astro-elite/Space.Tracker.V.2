@@ -1,0 +1,21 @@
+{
+  "name": "space-tracker-proxy",
+  "version": "3.0.0",
+  "private": true,
+  "description": "SPACE TRACKER Cloudflare Worker (API proxy, translation, Space Intelligence). Developed by Noven Studio.",
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.12.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  },
+  "allowScripts": {
+    "workerd@1.20261119.1": true,
+    "esbuild@0.28.2": true
+  }
+}

@@ -1,0 +1,37 @@
+name = "space-tracker-proxy"
+main = "worker.js"
+# worker.js imports @anthropic-ai/sdk: run `npm install` once before `npx wrangler deploy` (Wrangler bundles it).
+compatibility_date = "2025-01-01"
+
+[vars]
+# Your GitHub Pages origin (scheme + host, no path). Comma-separate several.
+# Required: when it is empty only http://localhost is accepted. "*" opens the free read-only
+# routes to any site but /translate still only answers explicitly listed origins.
+ALLOWED_ORIGINS = "https://astro-elite.github.io"
+
+# Translation store: every text is translated only once for all visitors (saves Gemini quota).
+# Wrangler creates the namespace automatically on the first deploy.
+[[kv_namespaces]]
+binding = "TR_KV"
+
+# Optional: global visitor counter. Create with `npx wrangler kv namespace create COUNTER`
+# and paste the returned id below, then uncomment.
+# [[kv_namespaces]]
+# binding = "COUNTER"
+# id = "PASTE_KV_NAMESPACE_ID"
+
+# Optional: Cloudflare rate limiting (shared across all isolates). The Worker also applies a
+# best-effort in-memory limit per isolate, so this block is not required.
+# [[ratelimits]]
+# name = "RATE_LIMITER"
+# namespace_id = "1001"
+#   [ratelimits.simple]
+#   limit = 60
+#   period = 60
+
+# Secrets — never commit them, set them with:
+#   npx wrangler secret bulk .dev.vars               # uploads everything in the local, git-ignored .dev.vars
+#   npx wrangler secret put GEMINI_API_KEYS          # Space Intelligence + translation; several keys, comma-separated
+#   npx wrangler secret put NASA_API_KEY             # optional, higher NASA limits
+#   npx wrangler secret put GOOGLE_TRANSLATE_API_KEY # optional, used instead of Gemini for translation
+#   npx wrangler secret put ANTHROPIC_API_KEY        # optional, used for Space Intelligence only when no Gemini key is set
